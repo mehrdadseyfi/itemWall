@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ItemWall</string>
+    <string name="mobile">موبایل</string>
+    <string name="password">پسورد</string>
+    <string name="forget_Pass">فراموشی رمز</string>
+    <string name="register">ثبت نام</string>
+    <string name="login">ورود</string>
+    <string name="name">نام و نام خانوداگی</string>
+    <string name="email">ایمیل</string>
 </resources>

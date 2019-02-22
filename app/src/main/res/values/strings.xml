@@ -7,4 +7,12 @@
     <string name="login">ورود</string>
     <string name="name">نام و نام خانوداگی</string>
     <string name="email">ایمیل</string>
+    <string name="title_upload_photo">بار گذاری مدرک</string>
+    <string name="cancel_upload">لغو</string>
+    <string name="camera_fa">استفاده ار دوربین</string>
+    <string name="gallery_fa">گالری</string>
+    <string name="progress_text">در حال بارگذاری</string>
+
+
+
 </resources>

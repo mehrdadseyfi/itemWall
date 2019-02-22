@@ -14,7 +14,7 @@ define('DB_USER','root');
 
 define('DB_PASS','');
 
-define('DB_NAME','db_itemfinder');
+define('DB_NAME','omidsolt_wall');
 
 class Db {
 

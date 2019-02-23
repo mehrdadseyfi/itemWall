@@ -30,6 +30,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'com.github.d-max:spots-dialog:0.7@aar'
     implementation 'com.github.jrvansuita:PickImage:2.2.3'
-
+    implementation files('libs/android-async-http-1.4.9.jar')
+    implementation 'cz.msebera.android:httpclient:4.3.6'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'uk.co.chrisjenx:calligraphy:2.1.0'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.novoda:merlin:1.1.6'
 
 }

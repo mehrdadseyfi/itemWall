@@ -7,6 +7,8 @@
  */
 require_once('../db.php');
 if(isset($_POST['token'])){
+    $db = Db::getInstance();
+
     $userToken=$_POST['token'];
     $member = $db->query("SELECT * FROM tbl_itemwall_users WHERE token=:token", array(
 
@@ -15,7 +17,9 @@ if(isset($_POST['token'])){
     ));
     if(count($member)== 1){
         $catApi = $db->query("SELECT * FROM tbl_itemwall_cat" );
-        echo $catApi;
+        $respone = array("status" => 'ok','cate'=>$catApi);
+        $respone = json_encode($respone, true);
+        echo $respone;
 
     }else{
         $respone = array("status" => 'token_expire');

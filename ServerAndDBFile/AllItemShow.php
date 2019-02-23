@@ -1,26 +1,26 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: User
- * Date: 22/02/2019
- * Time: 06:54 PM
+ * User: root
+ * Date: 2/23/2019
+ * Time: 12:56 PM
  */
-require_once('../db.php');
+require_once('db.php');
 if(isset($_POST['token'])){
-    $userToken=$_POST['token'];
     $db = Db::getInstance();
 
+    $userToken=$_POST['token'];
     $member = $db->query("SELECT * FROM tbl_itemwall_users WHERE token=:token", array(
 
         'token' => $userToken,
 
     ));
     if(count($member)== 1){
-        $catApi = $db->query("SELECT * FROM tbl_itemwall_cat" );
-        $respone = array("status" => 'ok','cate'=>$catApi);
-
+        $allItem = $db->query("SELECT * FROM tbl_itemwall_item" );
+        $respone = array("status" => 'ok','Item'=>$allItem);
         $respone = json_encode($respone, true);
         echo $respone;
+
     }else{
         $respone = array("status" => 'token_expire');
         $respone = json_encode($respone, true);

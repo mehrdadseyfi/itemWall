@@ -83,7 +83,7 @@ public class LogInActivity extends AppCompatActivity {
                     dialog.dismiss();
                     Log.d("retrofitResponse", response.body().getStatus().toString());
                     if (response.body().getStatus().toString().equals("user_log_in")) {
-                        PreferenceManager.getDefaultSharedPreferences(LogInActivity.this).edit().putString("token",response.body().getStatus().toString()).apply();
+                        PreferenceManager.getDefaultSharedPreferences(LogInActivity.this).edit().putString("token",response.body().getToken().toString()).apply();
                         PreferenceManager.getDefaultSharedPreferences(LogInActivity.this).edit().putBoolean("havetoken",true).apply();
                         startActivity(new Intent(LogInActivity.this, MainActivity.class));
                     } else if (response.body().getStatus().toString().equals("password_wrong")) {

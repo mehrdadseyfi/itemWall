@@ -26,6 +26,6 @@ public interface APIinterface {
 
     @POST("AllItemShow.php")
     @FormUrlEncoded
-    Call<AllItemModel> getAllItem(@Field("token") String token);
+    Call<AllItemModel> getAllItem(@Field("token") String token,@Field("item_topic") String item_topic,@Field("item_cate_id") String item_cate_id,@Field("item_location") String item_location,@Field("item_price") String item_price,@Field("item_peresent") String item_peresent);
 
 }

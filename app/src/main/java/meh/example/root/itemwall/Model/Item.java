@@ -115,4 +115,16 @@ public class Item {
         this.imageUrl2 = imageUrl2;
     }
 
+    public Item(String itemId, String itemTopic, String itemCatId, String itemLocation, String itemPrice, String itemPeresent, String itemStatus, String imageUrl1, String userId, String imageUrl2) {
+        this.itemId = itemId;
+        this.itemTopic = itemTopic;
+        this.itemCatId = itemCatId;
+        this.itemLocation = itemLocation;
+        this.itemPrice = itemPrice;
+        this.itemPeresent = itemPeresent;
+        this.itemStatus = itemStatus;
+        this.imageUrl1 = imageUrl1;
+        this.userId = userId;
+        this.imageUrl2 = imageUrl2;
+    }
 }

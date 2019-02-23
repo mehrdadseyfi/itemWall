@@ -1,18 +1,23 @@
 package meh.example.root.itemwall;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -22,6 +27,7 @@ import meh.example.root.itemwall.AddItem.CategoeryActivity;
 import meh.example.root.itemwall.Auth.LogInActivity;
 import meh.example.root.itemwall.Model.AllItemModel;
 import meh.example.root.itemwall.Model.Item;
+import meh.example.root.itemwall.Model.ItemCatStatus;
 import meh.example.root.itemwall.RetroFit.APIClient;
 import meh.example.root.itemwall.RetroFit.APIinterface;
 import meh.example.root.itemwall.ShowAllItem.ItemAdapter;
@@ -34,7 +40,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     SpotsDialog dialog;
     ListView listItem;
     SwipeRefreshLayout swipeLayout;
-    Button addItem,cate;
+    Button addItem,cate,search;
+    String item_topic="";
+    String item_cate_id="";
+    String item_location="";
+    String item_peresent="";
+    String item_price="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,12 +69,37 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
         });
+        search=(Button)findViewById(R.id.search);
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+
+            }
+        });
 
 
 
         dialog = new SpotsDialog(this, R.style.Custom);
         listItem=(ListView)findViewById(R.id.list_item);
+
+        //search
+        Intent intent = getIntent();
+        item_topic = intent.getStringExtra("topic");
+        item_cate_id = intent.getStringExtra("cateid");
+        item_location = intent.getStringExtra("location");
+        item_peresent = intent.getStringExtra("price");
+        item_price = intent.getStringExtra("peresent");
+        Toast.makeText(this, item_cate_id, Toast.LENGTH_SHORT).show();
+
+        //
+
+
+
         apiGetAllItem();
+
+
+
     }
 
     private void SwipeRefresh() {
@@ -83,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         String token = PreferenceManager.getDefaultSharedPreferences(this).getString("token","");
         APIinterface apIinterface = APIClient.getClient().create(APIinterface.class);
 
-        Call<AllItemModel> call = apIinterface.getAllItem(token);
+        Call<AllItemModel> call = apIinterface.getAllItem(token,item_topic,item_cate_id,item_location,item_price,item_peresent);
         // dar sf gharar dadan
         call.enqueue(new Callback<AllItemModel>() {
             @Override
@@ -146,4 +182,5 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         swipeLayout.setRefreshing(false);
         apiGetAllItem();
     }
-}
+    }
+

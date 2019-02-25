@@ -12,17 +12,19 @@ if (isset($_POST['mobile'])&&isset($_POST['password'])&&isset($_POST['full_name'
     $name = $_POST['full_name'];
     $email = $_POST['email'];
     $password = md5($_POST['password']);
+    $code = md5($_POST['password']);
     $db = Db::getInstance();
     //checkUserExist
-    $member = $db->query("SELECT * FROM tbl_itemwall_users WHERE username=:username", array(
+    $member = $db->query("SELECT * FROM tbl_itemwall_users WHERE username=:username AND code=:code", array(
 
         'username' => $username,
+        'code' => $code,
 
     ));
 
-    if(count($member)== 0){
+    if(count($member)== 1){
 
-        $db->insert("INSERT INTO tbl_itemwall_users (username,email,full_name,password) VALUES (:username,:email,:name,:password)", array(
+        $db->modify("UPDATE sabtenam SET email=:email,name=:name,password=:password, WHERE username=:username", array(
 
             'username' => $username,
             'email' => $email,

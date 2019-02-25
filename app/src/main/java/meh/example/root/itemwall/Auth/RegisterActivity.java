@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     Button  register;
-    EditText mobile, pass,email,name;
+    EditText mobile, pass,email,name,code;
     SpotsDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
         register = (Button) findViewById(R.id.register);
 
         mobile = (EditText) findViewById(R.id.mobile);
+        code = (EditText) findViewById(R.id.code);
         pass = (EditText) findViewById(R.id.password);
         email = (EditText) findViewById(R.id.email);
         name = (EditText) findViewById(R.id.name);
@@ -51,17 +52,17 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "تمام فیلد ها را پر کنید", Toast.LENGTH_SHORT).show();
                 } else {
                     dialog.show();
-                    ApiconnectUserName(mobile.getText().toString(), pass.getText().toString(),email.getText().toString(),name.getText().toString());
+                    ApiconnectUserName(mobile.getText().toString(), pass.getText().toString(),email.getText().toString(),name.getText().toString(),code.getText().toString());
 
                 }
             }
         });
     }
 
-    public void ApiconnectUserName(String mobile, String pass,String email,String name) {
+    public void ApiconnectUserName(String mobile, String pass,String email,String name,String code) {
         APIinterface apIinterface = APIClient.getClient().create(APIinterface.class);
 
-        Call<UserAuth> call = apIinterface.getRegister(mobile, pass,email,name);
+        Call<UserAuth> call = apIinterface.getRegister(mobile, pass,email,name,code);
         // dar sf gharar dadan
         call.enqueue(new Callback<UserAuth>() {
             @Override
@@ -75,9 +76,9 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(RegisterActivity.this, "ثبت نام با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
 
 
-                    } else if (response.body().getStatus().toString().equals("user_exist")) {
+                    } else if (response.body().getStatus().toString().equals("code_wrong")) {
 
-                        Toast.makeText(RegisterActivity.this, "کاربر با این شماره موبایل موجود است", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "کد وارد شده اشتباه است", Toast.LENGTH_SHORT).show();
                     } else {
 
                         Toast.makeText(RegisterActivity.this, "تمام اطلاعات را وارد نمایید", Toast.LENGTH_SHORT).show();

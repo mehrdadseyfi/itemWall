@@ -38,7 +38,14 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
         importview();
         logInClick();
+        register=(Button)findViewById(R.id.register);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(LogInActivity.this, BeforeRegisterActivity.class));
 
+            }
+        });
 
     }
 

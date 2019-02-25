@@ -1,5 +1,6 @@
 package meh.example.root.itemwall.RetroFit;
 
+import meh.example.root.itemwall.ItemDetail.ItemDetail;
 import meh.example.root.itemwall.Model.AllItemModel;
 import meh.example.root.itemwall.Model.ItemCatStatus;
 import meh.example.root.itemwall.Model.ItemCateModel;
@@ -18,7 +19,7 @@ public interface APIinterface {
 
     @POST("AuthMobile/Register.php")
     @FormUrlEncoded
-    Call<UserAuth> getRegister(@Field("mobile") String mobile, @Field("password") String pass, @Field("email") String email, @Field("full_name") String name);
+    Call<UserAuth> getRegister(@Field("mobile") String mobile, @Field("password") String pass, @Field("email") String email, @Field("full_name") String name, @Field("code") String code);
 
     @POST("AddItem/CateApi.php")
     @FormUrlEncoded
@@ -26,6 +27,18 @@ public interface APIinterface {
 
     @POST("AllItemShow.php")
     @FormUrlEncoded
-    Call<AllItemModel> getAllItem(@Field("token") String token,@Field("item_topic") String item_topic,@Field("item_cate_id") String item_cate_id,@Field("item_location") String item_location,@Field("item_price") String item_price,@Field("item_peresent") String item_peresent);
+    Call<AllItemModel> getAllItem(@Field("token") String token, @Field("item_topic") String item_topic, @Field("item_cate_id") String item_cate_id, @Field("item_location") String item_location, @Field("item_price") String item_price, @Field("item_peresent") String item_peresent);
+
+    @POST("AuthMobile/MyAdShow.php")
+    @FormUrlEncoded
+    Call<AllItemModel> getMyItem(@Field("token") String token);
+
+    @POST("Itemdetail.php")
+    @FormUrlEncoded
+    Call<ItemDetail> getItemDetail(@Field("token") String token, @Field("item_id") String item_id);
+
+    @POST("AuthMobile/CodeVerify.php")
+    @FormUrlEncoded
+    Call<UserAuth> getcodeVerify(@Field("mobile") String mobile);
 
 }

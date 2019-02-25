@@ -56,7 +56,7 @@ if (isset($_POST['token'])) {
             $allItem = $db->query("SELECT * FROM tbl_itemwall_item");
             $respone = array("status" => 'ok', 'Item' => $allItem);
             $respone = json_encode($respone, true);
-            echo $respone."hi";
+            echo $respone;
         }
 
 

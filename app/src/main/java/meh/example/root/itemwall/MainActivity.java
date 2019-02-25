@@ -1,23 +1,17 @@
 package meh.example.root.itemwall;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -25,13 +19,13 @@ import dmax.dialog.SpotsDialog;
 import meh.example.root.itemwall.AddItem.AddItemActivityActivity;
 import meh.example.root.itemwall.AddItem.CategoeryActivity;
 import meh.example.root.itemwall.Auth.LogInActivity;
+import meh.example.root.itemwall.Auth.MyAdActivity;
+import meh.example.root.itemwall.ItemDetail.ShowDetailAdActivity;
 import meh.example.root.itemwall.Model.AllItemModel;
 import meh.example.root.itemwall.Model.Item;
-import meh.example.root.itemwall.Model.ItemCatStatus;
 import meh.example.root.itemwall.RetroFit.APIClient;
 import meh.example.root.itemwall.RetroFit.APIinterface;
 import meh.example.root.itemwall.ShowAllItem.ItemAdapter;
-import meh.example.root.itemwall.ShowAllItem.ItemDetailActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     SpotsDialog dialog;
     ListView listItem;
     SwipeRefreshLayout swipeLayout;
-    Button addItem,cate,search;
+    Button addItem,cate,search,exit,myAd;
     String item_topic="";
     String item_cate_id="";
     String item_location="";
@@ -75,6 +69,23 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, SearchActivity.class));
 
+            }
+        });
+        exit=(Button)findViewById(R.id.exit);
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit().putBoolean("havetoken", false).apply();
+                Toast.makeText(MainActivity.this, "شما خارج شدید", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, LogInActivity.class));
+                finish();
+            }
+        });
+ myAd=(Button)findViewById(R.id.myAd);
+        myAd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               startActivity(new Intent(MainActivity.this, MyAdActivity.class));
             }
         });
 
@@ -168,8 +179,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(MainActivity.this, ItemDetailActivity.class);
-                intent.putExtra("serviceId", models.get(i).getItemId());
+                Intent intent = new Intent(MainActivity.this, ShowDetailAdActivity.class);
+                intent.putExtra("item_id", models.get(i).getItemId());
                 startActivity(intent);
 
             }

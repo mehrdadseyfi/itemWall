@@ -8,24 +8,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import dmax.dialog.SpotsDialog;
 import meh.example.root.itemwall.Auth.LogInActivity;
-import meh.example.root.itemwall.MainActivity;
-import meh.example.root.itemwall.Model.Item;
+import meh.example.root.itemwall.ItemDetail.ShowDetailAdActivity;
 import meh.example.root.itemwall.Model.ItemCatStatus;
 import meh.example.root.itemwall.Model.ItemCateModel;
 import meh.example.root.itemwall.R;
 import meh.example.root.itemwall.RetroFit.APIClient;
 import meh.example.root.itemwall.RetroFit.APIinterface;
-import meh.example.root.itemwall.ShowAllItem.ItemAdapter;
-import meh.example.root.itemwall.ShowAllItem.ItemDetailActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -98,7 +93,7 @@ public class CategoeryActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(CategoeryActivity.this, ItemDetailActivity.class);
+                Intent intent = new Intent(CategoeryActivity.this, ShowDetailAdActivity.class);
                 intent.putExtra("serviceId", models.get(i).getCatId());
                 startActivity(intent);
 

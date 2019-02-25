@@ -16,6 +16,7 @@ import meh.example.root.itemwall.R;
 import meh.example.root.itemwall.RetroFit.APIClient;
 import meh.example.root.itemwall.RetroFit.APIinterface;
 import meh.example.root.itemwall.RetroFit.UserAuth;
+import meh.example.root.itemwall.SearchActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,10 +52,10 @@ public class BeforeRegisterActivity extends AppCompatActivity {
         });
     }
 
-    public void Apiconnectcode(String mobile) {
+    public void Apiconnectcode(final String mobileUser) {
         APIinterface apIinterface = APIClient.getClient().create(APIinterface.class);
 
-        Call<UserAuth> call = apIinterface.getcodeVerify(mobile);
+        Call<UserAuth> call = apIinterface.getcodeVerify(mobileUser);
         // dar sf gharar dadan
         call.enqueue(new Callback<UserAuth>() {
             @Override
@@ -66,7 +67,9 @@ public class BeforeRegisterActivity extends AppCompatActivity {
                     if (response.body().getStatus().toString().equals("code_send")) {
                         Toast.makeText(BeforeRegisterActivity.this, "کدتایید برای شما ارسال شد", Toast.LENGTH_SHORT).show();
 
-                        startActivity(new Intent(BeforeRegisterActivity.this, RegisterActivity.class));
+                        Intent intent = new Intent(BeforeRegisterActivity.this, RegisterActivity.class);
+                        intent.putExtra("mobile",mobileUser);
+                        startActivity(intent);
                         finish();
                     } else if (response.body().getStatus().toString().equals("user_exist")) {
                         Toast.makeText(BeforeRegisterActivity.this, "کاربر موجود است", Toast.LENGTH_SHORT).show();

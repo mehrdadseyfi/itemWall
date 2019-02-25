@@ -21,14 +21,13 @@ class SendSms{
             CURLOPT_POSTFIELDS => array(
                 'receptor' => $mobile,
                 'sender' => '100065995',
-                'message' => $code
+                'message' => "کد تایید شما"."\n".$code
             )
         ));
 // Send the request & save response to $resp
         $resp = curl_exec($curl);
 // Close request to clear up some resources
         curl_close($curl);
-        echo $resp;
     }
 
 

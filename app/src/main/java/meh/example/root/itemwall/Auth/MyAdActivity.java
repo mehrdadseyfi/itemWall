@@ -107,7 +107,7 @@ public class MyAdActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(MyAdActivity.this, ShowDetailAdActivity.class);
-                intent.putExtra("serviceId", models.get(i).getItemId());
+                intent.putExtra("item_id", models.get(i).getItemId());
                 startActivity(intent);
 
             }

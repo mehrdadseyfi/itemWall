@@ -13,13 +13,14 @@ if (isset($_POST['mobile'])) {
 
     $username = $_POST['mobile'];
 
-    $member = $db->query("SELECT * FROM tbl_itemwall_users WHERE username=:username", array(
+    $member = $db->query("SELECT * FROM tbl_itemwall_users WHERE username=:username AND full_name IS NOT NULL ", array(
 
         'username' => $username,
 
     ));
-    if ($member == 0) {
-        $characters = '0123456789';
+    if (count($member )==0) {
+
+        $characters = '123456789';
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < 4; $i++) {
@@ -27,13 +28,28 @@ if (isset($_POST['mobile'])) {
         }
         $code= $randomString;
 
+        $memberMobile = $db->query("SELECT * FROM tbl_itemwall_users WHERE username=:username  ", array(
 
-        $db->insert("INSERT INTO tbl_itemwall_users (username,code) VALUES (:username,:code)", array(
-
-            'code' => $code,
-            'user_id' => $username,
+            'username' => $username,
 
         ));
+        if (count($memberMobile )==0) {
+
+            $db->insert("INSERT INTO tbl_itemwall_users (username,code) VALUES (:username,:code)", array(
+
+                'code' => $code,
+                'username' => $username,
+
+            ));
+        }else{
+
+            $db->modify("UPDATE sabtenam SET code=:code WHERE username=:username", array(
+
+                'code' => $code,
+                'username' => $username,
+
+            ));
+        }
         $sms=new SendSms();
         $sms->smsSend($username,$code);
 
@@ -43,7 +59,7 @@ if (isset($_POST['mobile'])) {
 
     } else {
 
-        $respone = array("status" => 'code_wrong');
+        $respone = array("status" => 'user_exist');
         $respone = json_encode($respone, true);
         echo $respone;
     }

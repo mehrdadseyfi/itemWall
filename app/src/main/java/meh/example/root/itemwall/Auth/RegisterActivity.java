@@ -1,5 +1,6 @@
 package meh.example.root.itemwall.Auth;
 
+import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,19 +23,24 @@ import retrofit2.Response;
 
 public class RegisterActivity extends AppCompatActivity {
     Button  register;
-    EditText mobile, pass,email,name,code;
+    TextView mobile, pass,email,name,code;
     SpotsDialog dialog;
+    String mobileUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         importview();
         RegisterClick();
+        Intent intent = getIntent();
+        mobileUser = intent.getStringExtra("mobile");
+        mobile.setText(mobileUser);
+        Toast.makeText(this, mobileUser, Toast.LENGTH_SHORT).show();
     }
     private void importview() {
         register = (Button) findViewById(R.id.register);
 
-        mobile = (EditText) findViewById(R.id.mobile);
+        mobile = (TextView) findViewById(R.id.mobile);
         code = (EditText) findViewById(R.id.code);
         pass = (EditText) findViewById(R.id.password);
         email = (EditText) findViewById(R.id.email);
@@ -48,11 +54,11 @@ public class RegisterActivity extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mobile.getText().toString().equals("") && pass.getText().toString().equals("")&& email.getText().toString().equals("")&& name.getText().toString().equals("")) {
+                if ( pass.getText().toString().equals("")&& email.getText().toString().equals("")&& name.getText().toString().equals("")) {
                     Toast.makeText(RegisterActivity.this, "تمام فیلد ها را پر کنید", Toast.LENGTH_SHORT).show();
                 } else {
                     dialog.show();
-                    ApiconnectUserName(mobile.getText().toString(), pass.getText().toString(),email.getText().toString(),name.getText().toString(),code.getText().toString());
+                    ApiconnectUserName(mobileUser, pass.getText().toString(),email.getText().toString(),name.getText().toString(),code.getText().toString());
 
                 }
             }
@@ -75,7 +81,9 @@ public class RegisterActivity extends AppCompatActivity {
 
                         Toast.makeText(RegisterActivity.this, "ثبت نام با موفقیت انجام شد", Toast.LENGTH_SHORT).show();
 
-
+                        Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else if (response.body().getStatus().toString().equals("code_wrong")) {
 
                         Toast.makeText(RegisterActivity.this, "کد وارد شده اشتباه است", Toast.LENGTH_SHORT).show();

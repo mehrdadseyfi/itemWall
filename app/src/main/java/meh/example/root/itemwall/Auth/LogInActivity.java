@@ -1,5 +1,6 @@
 package meh.example.root.itemwall.Auth;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
@@ -23,6 +24,7 @@ import meh.example.root.itemwall.SplashActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LogInActivity extends AppCompatActivity {
     Button logIn, register;
@@ -115,5 +117,9 @@ public class LogInActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

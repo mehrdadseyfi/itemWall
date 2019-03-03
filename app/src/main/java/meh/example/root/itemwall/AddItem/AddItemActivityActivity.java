@@ -1,6 +1,7 @@
 package meh.example.root.itemwall.AddItem;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -53,6 +54,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class AddItemActivityActivity extends AppCompatActivity implements IPickResult {
     PickSetup setup;
@@ -327,5 +329,9 @@ public class AddItemActivityActivity extends AppCompatActivity implements IPickR
             //Handle possible errors
             Toast.makeText(this, pickResult.getError().getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

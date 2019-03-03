@@ -1,5 +1,6 @@
 package meh.example.root.itemwall.ItemDetail;
 
+import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import meh.example.root.itemwall.RetroFit.APIinterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class ShowDetailAdActivity extends AppCompatActivity {
     TextView topic, location, price, persent,cate,contact;
@@ -98,5 +100,8 @@ public class ShowDetailAdActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 }

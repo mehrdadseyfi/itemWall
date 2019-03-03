@@ -51,7 +51,8 @@ if (isset($_COOKIE['token'])) {
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="http://getbootstrap.com/assets/ico/favicon.ico">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>همه آگهی ها</title>
 
     <!-- Bootstrap core CSS -->
@@ -77,7 +78,8 @@ if (isset($_COOKIE['token'])) {
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">صفحه ها</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -109,21 +111,21 @@ if (isset($_COOKIE['token'])) {
         <tbody>
 
 
-            <?php
+        <?php
 
-            for ($x = 0; $x < count($allItem); $x++) {
-                echo '    <tr>        <th scope="row">' . ($x + 1) . '</th>
+        for ($x = 0; $x < count($allItem); $x++) {
+            echo '    <tr>        <th scope="row">' . ($x + 1) . '</th>
 
  <td>' . $allItem[$x]['full_name'] . '</td>
             <td>' . $allItem[$x]['username'] . '</td>
-            <td>' . $allItem[$x]['email'] . '</td>        </tr>';
+            <td>' . $allItem[$x]['email'] . '</td> 
+              <td><button onclick="delUser(' . $allItem[$x]['user_id'] .')">del</button></td>        </tr>';
 
 
-            }
+        }
 
 
-            ?>
-
+        ?>
 
 
         </tbody>
@@ -136,7 +138,27 @@ if (isset($_COOKIE['token'])) {
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="bootstrap/js/bootstrap.js"></script>
+<script>
+    function delUser(x) {
+        var xhttp = new XMLHttpRequest();
 
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                //   document.getElementById("demo").innerHTML = this.responseText;
+              //   alert(this.response);
+                location.reload();
+            }
+
+
+        };
+        xhttp.open("POST", "ajax/delUser.php", true);
+
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("userid=" + x);
+
+    }
+
+</script>
 </body>
 </html>
 

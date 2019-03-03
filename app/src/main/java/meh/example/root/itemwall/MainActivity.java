@@ -3,13 +3,16 @@ package meh.example.root.itemwall;
 import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -29,17 +32,21 @@ import meh.example.root.itemwall.ShowAllItem.ItemAdapter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener  {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     SpotsDialog dialog;
     ListView listItem;
     SwipeRefreshLayout swipeLayout;
-    Button addItem,cate,search,exit,myAd;
-    String item_topic="";
-    String item_cate_id="";
-    String item_location="";
-    String item_peresent="";
-    String item_price="";
+    Button addItem, cate, search, exit, myAd;
+    String item_topic = "";
+    String item_cate_id = "";
+    String item_location = "";
+    String item_peresent = "";
+    String item_price = "";
+    DrawerLayout mDrawerLayout;
+    Boolean mSlideState=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //
         SwipeRefresh();
 
-        addItem=(Button)findViewById(R.id.add_item);
+        addItem = (Button) findViewById(R.id.add_item);
         addItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
         });
-        cate=(Button)findViewById(R.id.cate);
+        cate = (Button) findViewById(R.id.cate);
         cate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
         });
-        search=(Button)findViewById(R.id.search);
+        search = (Button) findViewById(R.id.search);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
             }
         });
-        exit=(Button)findViewById(R.id.exit);
+        exit = (Button) findViewById(R.id.exit);
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,18 +88,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 finish();
             }
         });
- myAd=(Button)findViewById(R.id.myAd);
+        myAd = (Button) findViewById(R.id.myAd);
         myAd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               startActivity(new Intent(MainActivity.this, MyAdActivity.class));
+                startActivity(new Intent(MainActivity.this, MyAdActivity.class));
             }
         });
 
 
-
         dialog = new SpotsDialog(this, R.style.Custom);
-        listItem=(ListView)findViewById(R.id.list_item);
+        listItem = (ListView) findViewById(R.id.list_item);
 
         //search
         Intent intent = getIntent();
@@ -106,10 +112,22 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         //
 
 
-
         apiGetAllItem();
+        ImageView image=(ImageView)findViewById(R.id.drawershow);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer);
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(mSlideState){
+                    mDrawerLayout.closeDrawer(Gravity.END);
+                    mSlideState=false;
+                }else{
+                    mDrawerLayout.openDrawer(Gravity.END);
+                    mSlideState=true;
 
-
+                }
+            }
+        });
 
     }
 
@@ -127,10 +145,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public void apiGetAllItem() {
         dialog.show();
-        String token = PreferenceManager.getDefaultSharedPreferences(this).getString("token","");
+        String token = PreferenceManager.getDefaultSharedPreferences(this).getString("token", "");
         APIinterface apIinterface = APIClient.getClient().create(APIinterface.class);
 
-        Call<AllItemModel> call = apIinterface.getAllItem(token,item_topic,item_cate_id,item_location,item_price,item_peresent);
+        Call<AllItemModel> call = apIinterface.getAllItem(token, item_topic, item_cate_id, item_location, item_price, item_peresent);
         // dar sf gharar dadan
         call.enqueue(new Callback<AllItemModel>() {
             @Override
@@ -148,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                     } else if (response.body().getStatus().toString().equals("ok")) {
 
-                        showListView(response.body().getItem(),MainActivity.this);
+                        showListView(response.body().getItem(), MainActivity.this);
 
 
                     }
@@ -170,11 +188,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
-    public void showListView(final List<Item> models, Context context)   {
+    public void showListView(final List<Item> models, Context context) {
 
 
-            ItemAdapter adapter = new ItemAdapter(models, context);
-             listItem.setAdapter(adapter);
+        ItemAdapter adapter = new ItemAdapter(models, context);
+        listItem.setAdapter(adapter);
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -189,9 +207,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
 
-    @Override public void onRefresh() {
+    @Override
+    public void onRefresh() {
         swipeLayout.setRefreshing(false);
         apiGetAllItem();
     }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
+}
+
 

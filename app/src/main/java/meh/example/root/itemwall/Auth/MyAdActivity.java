@@ -22,9 +22,11 @@ import meh.example.root.itemwall.R;
 import meh.example.root.itemwall.RetroFit.APIClient;
 import meh.example.root.itemwall.RetroFit.APIinterface;
 import meh.example.root.itemwall.ShowAllItem.ItemAdapter;
+import meh.example.root.itemwall.ShowAllItem.ItemAdapterMyAdd;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MyAdActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     SpotsDialog dialog;
@@ -100,7 +102,7 @@ public class MyAdActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void showListView(final List<Item> models, Context context)   {
 
 
-        ItemAdapter adapter = new ItemAdapter(models, context);
+        ItemAdapterMyAdd adapter = new ItemAdapterMyAdd(models, context);
         listItem.setAdapter(adapter);
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -119,5 +121,9 @@ public class MyAdActivity extends AppCompatActivity implements SwipeRefreshLayou
     @Override public void onRefresh() {
         swipeLayout.setRefreshing(false);
         apiGetAllItem();
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

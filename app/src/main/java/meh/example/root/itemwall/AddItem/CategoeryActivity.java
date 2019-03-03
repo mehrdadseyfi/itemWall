@@ -24,6 +24,7 @@ import meh.example.root.itemwall.RetroFit.APIinterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class CategoeryActivity extends AppCompatActivity {
     SpotsDialog dialog;
@@ -100,6 +101,10 @@ public class CategoeryActivity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
 }

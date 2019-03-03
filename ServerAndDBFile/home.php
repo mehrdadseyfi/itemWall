@@ -10,24 +10,24 @@ require_once('db.php');
 $db = Db::getInstance();
 
 if (isset($_COOKIE['token'])) {
-$member = $db->query("SELECT * FROM tbl_userweb WHERE token=:token", array(
+    $status = array('no', 'ok');
+    $member = $db->query("SELECT * FROM tbl_userweb WHERE token=:token", array(
 
-    'token' => $_COOKIE['token'],
+        'token' => $_COOKIE['token'],
 
-));
+    ));
 
-if (count($member) == 1) {
+    if (count($member) == 1) {
 
 
         $allItem = $db->query("SELECT * FROM tbl_itemwall_item");
 
 
-
     } else {
         $respone = array("status" => 'token_expire');
         $respone = json_encode($respone, true);
-    echo '<script>window.location.href = "index.php";</script>';
-    exit();
+        echo '<script>window.location.href = "index.php";</script>';
+        exit();
     }
 } else {
     $respone = array("status" => 'token_expire');
@@ -37,7 +37,8 @@ if (count($member) == 1) {
 
 
 }
-function cat($cat){
+function cat($cat)
+{
     $db = Db::getInstance();
 
     $cat = $db->query("SELECT * FROM tbl_itemwall_cat WHERE cat_id=:cat_id", array(
@@ -59,7 +60,8 @@ function cat($cat){
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" href="http://getbootstrap.com/assets/ico/favicon.ico">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>همه آگهی ها</title>
 
     <!-- Bootstrap core CSS -->
@@ -85,7 +87,8 @@ function cat($cat){
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">صفحه ها</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -106,7 +109,6 @@ function cat($cat){
     <table class="table">
         <thead>
         <tr>
-            <th scope="col">#</th>
             <th scope="col">موضوع</th>
             <th scope="col">محل</th>
             <th scope="col">قیمت</th>
@@ -114,36 +116,46 @@ function cat($cat){
             <th scope="col">عکس اول</th>
             <th scope="col">عکس دوم</th>
             <th scope="col">وضعیت</th>
+            <th scope="col">دلیل عدم انتشار</th>
+            <th scope="col"></th>
             <th scope="col">دسته</th>
+            <th scope="col">وضعیت انتشار</th>
         </tr>
         </thead>
         <tbody>
 
         <?php
 
-        for($x=0;$x<count($allItem);$x++) {
+        for ($x = 0; $x < count($allItem); $x++) {
             echo '              <tr>
-      <th scope="row">'.($x+1).'</th>
-
  <td>' . $allItem[$x]['item_topic'] . '</td>
             <td>' . $allItem[$x]['item_location'] . '</td>
             <td>' . $allItem[$x]['item_price'] . '</td>
             <td>' . $allItem[$x]['item_peresent'] . '</td>
             <td><a href="' . $allItem[$x]['image_url1'] . '">image 1</a></td>
             <td><a href="' . $allItem[$x]['image_url2'] . '">image 2</a></td>
-            <td>' . $allItem[$x]['item_status'] . '</td>';
+            <td>' . $allItem[$x]['item_status'] . '</td>
+            <td>' . $allItem[$x]['reason'] . '</td>
+            <td><button onclick="reasonnotPublish(' . $allItem[$x]['item_id'] . ')"> دلیل عدم انتشار</button> ' . '</td>';
             echo '<td>';
             cat($allItem[$x]['item_cat_id']);
-            echo '</td>        </tr>';
+            echo '</td>';
+            echo '<td><select  onchange="changestatus(' . $allItem[$x]['item_id'] . ')" class="custom-select" id="status">
+      <option selected></option>';
+            for ($y = 0; $y < count($status); $y++) {
+                echo '<option value=';
+                echo($y);
+                echo '>';
+                echo $status[$y];
+                echo '</option>';
+            }
+            echo '</select></td></tr>';
 
 
         }
 
 
-
         ?>
-
-
 
 
         </tbody>
@@ -156,7 +168,45 @@ function cat($cat){
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="bootstrap/js/bootstrap.js"></script>
+<script>
+    function changestatus(x) {
+        var xhttp = new XMLHttpRequest();
+        var status = document.getElementById('status').value;
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                //   document.getElementById("demo").innerHTML = this.responseText;
+                //alert(this.response);
+                location.reload();
+            }
 
+
+        };
+        xhttp.open("POST", "ajax/editstatus.php", true);
+
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.send("itemid=" + x + "&status=" + status);
+    }
+    function reasonnotPublish(x) {
+        var reason = prompt("دلیل عدم انتشار", "");
+        if (reason != "" && reason != null) {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    //   document.getElementById("demo").innerHTML = this.responseText;
+                    //alert(this.response);
+                    location.reload();
+                }
+
+
+            };
+            xhttp.open("POST", "ajax/reasonNotPublish.php", true);
+
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send("itemid=" + x + "&reason=" + reason);
+        }
+    }
+</script>
 </body>
 </html>
 

@@ -24,7 +24,7 @@ public class Item {
     private String itemPeresent;
     @SerializedName("item_status")
     @Expose
-    private String itemStatus;
+    private int itemStatus;
     @SerializedName("image_url1")
     @Expose
     private String imageUrl1;
@@ -34,6 +34,9 @@ public class Item {
     @SerializedName("image_url2")
     @Expose
     private String imageUrl2;
+    @SerializedName("reason")
+    @Expose
+    private String reason;
 
     public String getItemId() {
         return itemId;
@@ -45,6 +48,14 @@ public class Item {
 
     public String getItemTopic() {
         return itemTopic;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
     public void setItemTopic(String itemTopic) {
@@ -83,11 +94,11 @@ public class Item {
         this.itemPeresent = itemPeresent;
     }
 
-    public String getItemStatus() {
+    public int getItemStatus() {
         return itemStatus;
     }
 
-    public void setItemStatus(String itemStatus) {
+    public void setItemStatus(int itemStatus) {
         this.itemStatus = itemStatus;
     }
 
@@ -115,7 +126,7 @@ public class Item {
         this.imageUrl2 = imageUrl2;
     }
 
-    public Item(String itemId, String itemTopic, String itemCatId, String itemLocation, String itemPrice, String itemPeresent, String itemStatus, String imageUrl1, String userId, String imageUrl2) {
+    public Item(String itemId, String itemTopic, String itemCatId, String itemLocation, String itemPrice, String itemPeresent, int itemStatus, String imageUrl1, String userId, String imageUrl2) {
         this.itemId = itemId;
         this.itemTopic = itemTopic;
         this.itemCatId = itemCatId;

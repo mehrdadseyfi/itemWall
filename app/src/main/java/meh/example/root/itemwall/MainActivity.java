@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         item_location = intent.getStringExtra("location");
         item_peresent = intent.getStringExtra("price");
         item_price = intent.getStringExtra("peresent");
-        Toast.makeText(this, item_cate_id, Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(this, item_cate_id, Toast.LENGTH_SHORT).show();
 
         //
 
@@ -156,7 +156,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 dialog.dismiss();
                 ////check connect succeful   status code
                 if (response.isSuccessful()) {
-                    Log.d("retrofitResponse", response.body().getStatus().toString());
                     if (response.body().getStatus().toString().equals("token_expire")) {
 
                         PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit().putBoolean("havetoken", false).apply();
@@ -167,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     } else if (response.body().getStatus().toString().equals("ok")) {
 
                         showListView(response.body().getItem(), MainActivity.this);
+                        Log.d("retrofitResponse", response.body().getStatus().toString());
 
 
                     }

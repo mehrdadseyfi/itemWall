@@ -68,6 +68,7 @@ public class AddItemActivityActivity extends AppCompatActivity implements IPickR
      Spinner sp1;
      String cateId="املاک";
      List<String> list;
+     List<String> list_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +112,7 @@ public class AddItemActivityActivity extends AppCompatActivity implements IPickR
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
                 // TODO Auto-generated method stub
 //                Toast.makeText(getBaseContext(), list.get(position), Toast.LENGTH_SHORT).show();
-                cateId=list.get(position);
+                cateId=list_id.get(position);
             }
 
             @Override
@@ -173,8 +174,10 @@ public class AddItemActivityActivity extends AppCompatActivity implements IPickR
                         Log.d("showResponse", response.body().getCate().get(0).getCatName());
 
                         list = new ArrayList<String>();
+                        list_id = new ArrayList<String>();
                         for (int i = 0; i < response.body().getCate().size(); i++) {
                             list.add(response.body().getCate().get(i).getCatName());
+                            list_id.add(response.body().getCate().get(i).getCatId());
                         }
                         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(AddItemActivityActivity.this,
                                 android.R.layout.simple_list_item_1, list);

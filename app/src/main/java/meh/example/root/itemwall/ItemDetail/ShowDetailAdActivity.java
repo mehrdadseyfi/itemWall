@@ -76,6 +76,7 @@ public class ShowDetailAdActivity extends AppCompatActivity {
                         Picasso.get().load("https://mehrdadseyfi.ir/apiWall/AddItem/"+response.body().getItem().get(0).getImageUrl2()).into(image_item2);
                         location.setText(response.body().getItem().get(0).getItemLocation());
                         cate.setText(response.body().getItem().get(0).getItemCatId());
+                        Log.d("retrofitResponse",response.body().getItem().get(0).getItemCatId());
                         price.setText(response.body().getItem().get(0).getItemPrice());
                         topic.setText(response.body().getItem().get(0).getItemTopic());
                         persent.setText(response.body().getItem().get(0).getItemPeresent());

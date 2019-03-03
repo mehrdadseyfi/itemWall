@@ -24,6 +24,10 @@ if (isset($_POST['token'])&&isset($_POST['item_id'])) {
         $allItemSearch = $db->query("SELECT * FROM tbl_itemwall_item WHERE item_id=:item_id ",array(
             'item_id'=>$item_id
         ));
+        for($x=0;$x<count($allItemSearch);$x++){
+            $allItemSearch[$x]['item_cat_id']=cateName($allItemSearch[$x]['item_cat_id']);
+        }
+
         $contactItem = $db->query("SELECT * FROM tbl_itemwall_users WHERE user_id=:user_id ",array(
             'user_id'=>$allItemSearch[0]['user_id']
         ));
@@ -45,4 +49,14 @@ if (isset($_POST['token'])&&isset($_POST['item_id'])) {
     $respone = array("status" => 'field_emp');
     $respone = json_encode($respone, true);
     echo $respone;
+}
+function cateName($cateId){
+    $db = Db::getInstance();
+
+    $cat = $db->query("SELECT * FROM tbl_itemwall_cat WHERE cat_id=:cat_id", array(
+
+        'cat_id' => $cateId,
+
+    ));
+    return $cat[0]['cat_name'];
 }

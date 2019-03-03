@@ -33,6 +33,7 @@ public class SearchActivity extends AppCompatActivity {
     Spinner sp1;
     SpotsDialog dialog;
     List<String> list;
+    List<String> list_id;
     String cateId="";
 
 
@@ -43,14 +44,14 @@ public class SearchActivity extends AppCompatActivity {
         importView();
         dialog.show();
         apiGetCate();
-                  Toast.makeText(getBaseContext(), cateId, Toast.LENGTH_SHORT).show();
+            //      Toast.makeText(getBaseContext(), cateId, Toast.LENGTH_SHORT).show();
 
         sp1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
                 // TODO Auto-generated method stub
-                cateId=list.get(position);
+                cateId=list_id.get(position);
 //                Toast.makeText(getBaseContext(), cateId, Toast.LENGTH_SHORT).show();
 
             }
@@ -110,10 +111,14 @@ public class SearchActivity extends AppCompatActivity {
                         Log.d("showResponse", response.body().getCate().get(0).getCatName());
 
                         list = new ArrayList<String>();
+                        list_id = new ArrayList<String>();
                         list.add("");
+                        list_id.add("");
                         for (int i = 0; i < response.body().getCate().size(); i++) {
 
                             list.add(response.body().getCate().get(i).getCatName());
+                            list_id.add(response.body().getCate().get(i).getCatId());
+
                         }
                         ArrayAdapter<String> adp1 = new ArrayAdapter<String>(SearchActivity.this,
                                 android.R.layout.simple_list_item_1, list);
